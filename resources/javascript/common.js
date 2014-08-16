@@ -8,7 +8,6 @@ if ( typeof (common) == typeof (undefined)) {
 
 $(document).ready(function() {
 	common.toggleSideMenu();
-	common.test();
 });
 
 common.toggleSideMenu = function() {
@@ -20,10 +19,4 @@ common.toggleSideMenu = function() {
 			$body.className = ( $body.className == 'menu-active' )? '' : 'menu-active';
 		});
 	}
-};
-
-common.test = function() {
-	$('#writing_title').on('click', function() {
-		$('#modal-edit-writing').modal('toggle');
-	});
 };

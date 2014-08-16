@@ -101,7 +101,8 @@ body.menu-active nav#slide-menu ul {
  Content
  */
 div#content {
-	position: fixed;
+	/*position: fixed;*/
+	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;

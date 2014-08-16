@@ -2,17 +2,28 @@
  * @author EnterKey
  */
 
-/*
-  Slidemenu
-*/
-window.onload = function() {
-	var $body = document.body, 
-		$menu_trigger = $body.getElementsByClassName('menu-trigger')[0];
+if ( typeof (common) == typeof (undefined)) {
+	common = {};
+}
+
+$(document).ready(function() {
+	common.toggleSideMenu();
+	common.test();
+});
+
+common.toggleSideMenu = function() {
+	var $body = $('body')[0], 
+		$menu_trigger = $('.menu-trigger');
 	
 	if ( typeof $menu_trigger != 'undefined' ) {
-		$menu_trigger.addEventListener('click', function() {
+		$menu_trigger.on('click', function() {
 			$body.className = ( $body.className == 'menu-active' )? '' : 'menu-active';
 		});
 	}
+};
 
+common.test = function() {
+	$('#writing_title').on('click', function() {
+		$('#modal-edit-writing').modal('toggle');
+	});
 };

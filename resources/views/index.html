@@ -26,7 +26,7 @@
 	<body>
 
 		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-			<div class="container-fluid">
+			<div class="container">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 						<span class="sr-only">Toggle navigation</span>
@@ -34,27 +34,18 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">Project name</a>
+					<a class="navbar-brand" href="#">Soma Editor</a>
 				</div>
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<li>
-							<a href="#">Dashboard</a>
+							<a href="#">Login</a>
 						</li>
 						<li>
-							<a href="#">Settings</a>
-						</li>
-						<li>
-							<a href="#">Profile</a>
-						</li>
-						<li>
-							<a href="#">Help</a>
+							<a href="#">Join</a>
 						</li>
 					</ul>
-					<form class="navbar-form navbar-right">
-						<input type="text" class="form-control" placeholder="Search...">
-					</form>
-				</div>
+				</div><!--/.navbar-collapse -->
 			</div>
 		</div>
 
@@ -71,7 +62,7 @@
 					<li>
 						Test Example
 					</li>
-					
+
 					<li class="sep">
 						Test Example
 					</li>
@@ -83,11 +74,78 @@
 			<!-- Content panel -->
 			<div id="content">
 				<div class="menu-trigger"></div>
-				<h1>EnterKey sliding menu</h1>
-				<p>
-					Here's an easy way to create an side sliding menu.
-				</p>
-				<textarea class="ckeditor" cols="80" id="editor1" name="editor1" rows="10"></textarea>
+				<div class='header row'>
+					<div class='col-sm-12'>
+						<h1 class='current_writing_title text-ellipsis display_inline' id='writing_title'>Untitled Document</h1>
+					</div>
+				</div>
+				<div class='menu row'>
+					<div class='col-sm-12'>
+						<div class='menu'>
+							<a class="btn btn-sm btn-default default-tooltip" data-toggle="tooltip" href="#" id="save_writing_button" title="Save writing">
+								<span class='glyphicon glyphicon-floppy-saved'></span>
+							</a>
+
+							<div class='btn-group' data-toggle='buttons'>
+								<label class='btn btn-sm btn-default btn-checkbox active default-tooltip' data-toggle='tooltip' title='Show/Hide directory'>
+									<input checked="checked" id="toggle_preview" name="toggle_preview" type="checkbox" value="" />
+									<span class='glyphicon glyphicon-align-justify'></span> </label>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class='contents row'>
+					<div class='col-sm-6' id='editor'>
+						<textarea class="ckeditor1 source box" cols="80" id="editor1" name="editor1" rows="10"></textarea>
+					</div>
+					<div class='col-sm-6' id='preview'>
+						<div class='target box' id='target'>
+							Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+						</div>
+					</div>
+				</div>
+
+				<div class='modal fade' id='modal-edit-writing'>
+					<div class='modal-dialog'>
+						<div class='modal-content'>
+							<div class='modal-header'>
+								<button aria-hidden='true' class='close' data-dismiss='modal' type='button'>
+									&times;
+								</button>
+								<h4 class='modal-title'>Change Title and Category</h4>
+							</div>
+							<div class='modal-body'>
+								<div class='form-horizontal'>
+									<div class='modal-message'></div>
+									<div class='form-group'>
+										<label class="control-label col-sm-2" for="title">Title</label>
+										<div class='col-sm-8'>
+											<input autofocus="autofocus" class="form-control" id="title" name="title" type="text" value="" />
+										</div>
+									</div>
+									<div class='form-group'>
+										<label class="control-label col-sm-2" for="category_id">Category</label>
+										<div class='col-sm-8'>
+											<select class="form-control" id="category_id" name="category_id">
+												<option value="">Choose Category</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class='modal-footer'>
+								<button class='btn btn-primary' data-dismiss='modal' id='btn-done' type='button'>
+									Done
+								</button>
+								<button class='btn btn-default' data-dismiss='modal' type='button'>
+									Cancel
+								</button>
+							</div>
+
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -97,7 +155,8 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script src="http://127.0.0.1:8020/SomaEditor/resources/lib/bootstrap-3.2.0/js/bootstrap.min.js"></script>
 		<script src="http://127.0.0.1:8020/SomaEditor/resources/javascript/common.js"></script>
-		
+
 		<script src="http://127.0.0.1:8020/SomaEditor/resources/lib/CKEditor4/ckeditor.js"></script>
+		<script src="http://127.0.0.1:8020/SomaEditor/resources/javascript/editor.js"></script>
 	</body>
 </html>

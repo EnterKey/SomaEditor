@@ -35,7 +35,7 @@ nav#slide-menu {
 }
 nav#slide-menu > ul {
 	display: block;
-	margin: 40px;
+	margin: 20px 40px 40px 40px;
 	padding: 0;
 	list-style: none;
 	opacity: 0.5;
@@ -163,4 +163,13 @@ body.menu-active div#content {
 
 body.menu-active div#content .menu-trigger {
 	left: 294px;
+}
+
+#jstree-wrapper {
+	width: 250px; 
+	height: 350px; 
+	margin-left: 20px; 
+	border: 1px solid #6b7b8d; 
+	overflow-y: scroll;
+	border-radius: 5px;
 }

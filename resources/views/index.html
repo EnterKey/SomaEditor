@@ -21,6 +21,9 @@
 
 		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 		<script src="http://127.0.0.1:8020/SomaEditor/resources/lib/bootstrap-3.2.0/assets/js/ie10-viewport-bug-workaround.js"></script>
+		
+		<!-- jstree -->
+		<link rel="stylesheet" href="http://127.0.0.1:8020/SomaEditor/resources/lib/jstree/dist/themes/default/style.min.css" />
 	</head>
 
 	<body>
@@ -52,22 +55,43 @@
 		<div class="container-fluid">
 			<!-- Navigation -->
 			<nav id="slide-menu">
+				<!-- 3 setup a container element -->
+				<div id="jstree">
+					<!-- in this example the tree is populated from inline HTML -->
+					<ul>
+						<li>
+							Root node 1
+							<ul>
+								<li id="child_node_1">
+									Child node 1
+								</li>
+								<li>
+									Child node 2
+								</li>
+							</ul>
+						</li>
+						<li>
+							Root node 2
+						</li>
+					</ul>
+				</div>
+				
 				<ul>
 					<li>
-						Test Example
+						Document List
 					</li>
 					<li>
-						Test Example
+						Document Write
 					</li>
 					<li>
-						Test Example
+						Document Preview
 					</li>
-
+					
 					<li class="sep">
-						Test Example
+						Home
 					</li>
 					<li>
-						Test Example
+						Settings
 					</li>
 				</ul>
 			</nav>
@@ -158,7 +182,10 @@
 		<!-- ckEditor -->
 		<script src="http://127.0.0.1:8020/SomaEditor/resources/lib/CKEditor4/ckeditor.js"></script>
 		<script src="http://127.0.0.1:8020/SomaEditor/resources/javascript/editorConfig.js"></script>
-		
 		<script src="http://127.0.0.1:8020/SomaEditor/resources/javascript/editor.js"></script>
+		
+		<!-- jstree -->
+		<script src="http://127.0.0.1:8020/SomaEditor/resources/lib/jstree/dist/jstree.min.js"></script>
+		<script src="http://127.0.0.1:8020/SomaEditor/resources/javascript/jstree.js"></script>
 	</body>
 </html>

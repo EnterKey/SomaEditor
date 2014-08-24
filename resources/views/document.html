@@ -17,39 +17,42 @@
 		
 		<!-- Global CSS -->
 		<link href="/SomaEditor/resources/stylesheets/common.css" rel="stylesheet">
-		
-	    <!-- Main Page Custom CSS & Font -->
-	    <link href="/SomaEditor/resources/lib/mainPage/landing-page.css" rel="stylesheet">
-	    <link href="/SomaEditor/resources/lib/mainPage/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-	    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 	</head>
 
 	<body>
 
-		<!-- Header -->
-		<div class="intro-header">
-
+		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 			<div class="container">
-
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="intro-message">
-							<h1>Note Hub</h1>
-							<h3>Welcome to Note Hub</h3>
-							<hr class="intro-divider">
-							<ul class="list-inline intro-social-buttons">
-								<li>
-									<a href="/SomaEditor/resources/views/document.html" class="btn btn-default btn-lg"><i class="fa fa-google-plus-square fa-fw"></i> <span class="network-name">Log in with Google Account</span></a>
-								</li>
-							</ul>
-						</div>
-					</div>
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">Soma Editor</a>
 				</div>
-
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li class="active">
+							<a href="#Document">Document</a>
+						</li>
+						<li>
+							<a href="#Bookmark">Bookmark</a>
+						</li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="#">Login</a>
+						</li>
+						<li>
+							<a href="#">Join</a>
+						</li>
+					</ul>
+				</div><!--/.navbar-collapse -->
 			</div>
-			<!-- /.container -->
 		</div>
-		
+
 		<!-- Placed at the end of the document so the pages load faster -->
 		<script src="/SomaEditor/resources/lib/jquery/jquery-1.9.1.js"></script>
 		<script src="/SomaEditor/resources/lib/bootstrap-3.2.0/js/bootstrap.min.js"></script>

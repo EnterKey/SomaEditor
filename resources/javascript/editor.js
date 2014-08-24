@@ -2,7 +2,7 @@
  * @author EnterKey
  */
 
-if ( typeof (common) == typeof (undefined)) {
+if ( typeof (editor) == typeof (undefined)) {
 	editor = {};
 }
 

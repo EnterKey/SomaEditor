@@ -6,28 +6,44 @@ if ( typeof (editor) == typeof (undefined)) {
 	editor = {};
 }
 
-$(document).ready(function() {
+editor.init = function() {
+	editor.writingDocumentTitle = '#writing_title';
+	editor.titleOfToggleModal = '#modal-title';
+	
 	editor.setEventListener();
-});
+};
+
 
 editor.setEventListener = function() {
-	this.toggleTitleModal();
+	this.toggleSideMenu();
+	this.toggleModalForChangeDocumentTitle();
 	this.changeDocumentTitle();
 	this.toggleReviewDivision();
 };
 
-editor.toggleTitleModal = function() {
-	$('#writing_title').on('click', function() {
-		var title = $('#writing_title').text();
-		$('#title').val(title);
+editor.toggleSideMenu = function() {
+	var $body = $('body')[0], 
+		$menu_trigger = $('.menu-trigger');
+	
+	if (common.isUsableElement($menu_trigger)) {
+		$menu_trigger.on('click', function() {
+			$body.className = ( $body.className == 'menu-active' )? '' : 'menu-active';
+		});
+	}
+};
+
+editor.toggleModalForChangeDocumentTitle = function() {
+	$(editor.writingDocumentTitle).on('click', function() {
+		var documentTitle = $(editor.writingDocumentTitle).text();
+		$(editor.titleOfToggleModal).val(documentTitle);
 		$('#modal-edit-writing').modal('toggle');
 	});
 };
 
 editor.changeDocumentTitle = function() {
 	$('#btn-done').on('click', function() {
-		var title = $('#title').val();
-		$('#writing_title').html(title);
+		var title = $(editor.titleOfToggleModal).val();
+		$(editor.writingDocumentTitle).html(title);
 	});
 };
 

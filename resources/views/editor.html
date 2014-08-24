@@ -16,7 +16,10 @@
 		<script src="/SomaEditor/resources/lib/bootstrap-3.2.0/assets/js/ie10-viewport-bug-workaround.js"></script>
 		
 		<!-- Global CSS -->
-		<link href="/SomaEditor/resources/stylesheets/common.css" rel="stylesheet">
+		<link rel="stylesheet" href="/SomaEditor/resources/stylesheets/common.css">
+		
+		<!-- editor page css -->
+		<link rel="stylesheet" href="/SomaEditor/resources/stylesheets/editor.css" />
 		
 		<!-- jstree -->
 		<link rel="stylesheet" href="/SomaEditor/resources/lib/jstree/dist/themes/default/style.min.css" />
@@ -33,15 +36,15 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">Soma Editor</a>
+					<a class="navbar-brand navbar-brand-title" href="/SomaEditor/resources/views/index.html">Soma Editor</a>
 				</div>
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
 						<li class="active">
-							<a href="#Document">Document</a>
+							<a href="/SomaEditor/resources/views/document.html">Document</a>
 						</li>
 						<li>
-							<a href="#Bookmark">Bookmark</a>
+							<a href="/SomaEditor/resources/views/editor.html">Bookmark</a>
 						</li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
@@ -185,7 +188,7 @@
 									<div class='form-group'>
 										<label class="control-label col-sm-2" for="title">Title</label>
 										<div class='col-sm-8'>
-											<input autofocus="autofocus" class="form-control" id="title" name="title" type="text" value="" />
+											<input autofocus="autofocus" class="form-control" id="modal-title" name="title" type="text" value="" />
 										</div>
 									</div>
 									<div class='form-group'>
@@ -219,11 +222,11 @@
 		
 		<!-- Global Script -->
 		<script src="/SomaEditor/resources/javascript/common.js"></script>
+		<script src="/SomaEditor/resources/javascript/editor.js"></script>
 
 		<!-- ckEditor -->
 		<script src="/SomaEditor/resources/lib/CKEditor4/ckeditor.js"></script>
 		<script src="/SomaEditor/resources/javascript/editorConfig.js"></script>
-		<script src="/SomaEditor/resources/javascript/editor.js"></script>
 		
 		<!-- jstree -->
 		<script src="/SomaEditor/resources/lib/jstree/dist/jstree.min.js"></script>

@@ -4,11 +4,11 @@ if ( typeof (documents) == typeof (undefined)) {
 
 documents = {
 	_cacheElement : {
-		addCategoryBtn : '#add-category',
-		addCategoryDoneBtn : '#add-categoty-btn-done',
-        modalForAddCategory : '#modal-edit-category',
-        titleOfModalForAddCategory : '#add-category-modal-title',
-        sideMenu : '.document-sidebar-category'
+		addCategoryBtn 				: '#add-category',
+		addCategoryDoneBtn 			: '#add-categoty-btn-done',
+        modalForAddCategory 		: '#modal-edit-category',
+        titleOfModalForAddCategory 	: '#add-category-modal-title',
+        sideMenu 					: '.document-sidebar-category'
 	},
 	
 	init : function() {
@@ -21,8 +21,9 @@ documents = {
 	},
 	
 	setClickedCategoryAddActiveClass : function() {
-		$('.document-sidebar-category').on('click', 'a', function(e) {
-			$('.document-sidebar-category').children().removeClass('active');
+		var self = this;
+		$(self._cacheElement.sideMenu).on('click', 'a', function(e) {
+			$(self._cacheElement.sideMenu).children().removeClass('active');
 			$(this).addClass('active');
 		});
 	}, 

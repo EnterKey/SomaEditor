@@ -9,7 +9,10 @@ if ( typeof (editor) == typeof (undefined)) {
 editor = {
 	_cacheElement : {
 		writingDocumentTitle : '#writing_title',
-		titleOfToggleModal : '#modal-title'
+		titleOfToggleModal : '#modal-title',
+        editorDiv : '#editor',
+        prevviewDiv : '#preview',
+        modalForChangeDocumentTitle : '#modal-edit-writing'
 	},
 	
 	init : function() {
@@ -39,16 +42,7 @@ editor = {
 		$(this._cacheElement.writingDocumentTitle).on('click', function() {
 			var documentTitle = $(self._cacheElement.writingDocumentTitle).text();
 			$(self._cacheElement.titleOfToggleModal).val(documentTitle);
-			$('#modal-edit-writing').modal('toggle');
-		});
-	},
-	
-	toggleModalForChangeDocumentTitle : function() {
-		var self = this;
-		$(this._cacheElement.writingDocumentTitle).on('click', function() {
-			var documentTitle = $(self._cacheElement.writingDocumentTitle).text();
-			$(self._cacheElement.titleOfToggleModal).val(documentTitle);
-			$('#modal-edit-writing').modal('toggle');
+			$(self._cacheElement.modalForChangeDocumentTitle).modal('toggle');
 		});
 	}, 
 	
@@ -62,15 +56,16 @@ editor = {
 	
 	
 	toggleReviewDivision : function() {
+        var self = this;
 		$('#toggle_preview_btn').on('click', function() {
 			var isReviewActive = $("input:checkbox[id='toggle_preview']").is(":checked");
 			
 			if(isReviewActive) {
-				$('#editor').removeClass('col-sm-6').addClass('col-sm-12');
-				$('#preview').removeClass('col-sm-6').addClass('col-sm-12');
+				$(self._cacheElement.editorDiv).removeClass('col-sm-6').addClass('col-sm-12');
+				$(self._cacheElement.prevviewDiv).removeClass('col-sm-6').addClass('col-sm-12');
 			} else {
-				$('#editor').removeClass('col-sm-12').addClass('col-sm-6');
-				$('#preview').removeClass('col-sm-12').addClass('col-sm-6');
+				$(self._cacheElement.editorDiv).removeClass('col-sm-12').addClass('col-sm-6');
+				$(self._cacheElement.prevviewDiv).removeClass('col-sm-12').addClass('col-sm-6');
 			}
 		});
 	}

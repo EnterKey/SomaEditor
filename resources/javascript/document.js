@@ -5,7 +5,10 @@ if ( typeof (documents) == typeof (undefined)) {
 documents = {
 	_cacheElement : {
 		addCategoryBtn : '#add-category',
-		addCategoryDoneBtn : '#add-categoty-btn-done'
+		addCategoryDoneBtn : '#add-categoty-btn-done',
+        modalForAddCategory : '#modal-edit-category',
+        titleOfModalForAddCategory : '#add-category-modal-title',
+        sideMenu : '.document-sidebar-category'
 	},
 	
 	init : function() {
@@ -25,20 +28,18 @@ documents = {
 	}, 
 	
 	addCategory : function() {
+        var self = this;
 		$(this._cacheElement.addCategoryBtn).on('click', function(e) {
 			e.preventDefault();
-			$('#modal-edit-category').modal('toggle');
-			$('#add-category-modal-title').val('');
+			$(self._cacheElement.modalForAddCategory).modal('toggle');
+			$(self._cacheElement.titleOfModalForAddCategory).val('');
 		});
 		
 		$(this._cacheElement.addCategoryDoneBtn).on('click', function(e) {
-			var categoryName = $('#add-category-modal-title').val();
-			var appendItem = '<a href="#" class="list-group-item">' + categoryName + '</a>';
-			$(".document-sidebar-category").append(appendItem);
+            var categoryName = $(self._cacheElement.titleOfModalForAddCategory).val(),
+                appendItem = '<a href="#" class="list-group-item">' + categoryName + '</a>';
+
+			$(self._cacheElement.sideMenu).append(appendItem);
 		});
 	}
 };
-
-$(document).ready(function() {
-	documents.init();
-});

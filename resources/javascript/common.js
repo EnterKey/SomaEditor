@@ -14,6 +14,7 @@ common = {
 
 $(document).ready(function() {
 	editor.init();
+    documents.init();
 });
 
 

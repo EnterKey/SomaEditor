@@ -35,25 +35,28 @@ editor = {
 	},
 	
 	toggleModalForChangeDocumentTitle : function() {
+		var self = this;
 		$(this._cacheElement.writingDocumentTitle).on('click', function() {
-			var documentTitle = $(this._cacheElement.writingDocumentTitle).text();
-			$(this._cacheElement.titleOfToggleModal).val(documentTitle);
+			var documentTitle = $(self._cacheElement.writingDocumentTitle).text();
+			$(self._cacheElement.titleOfToggleModal).val(documentTitle);
 			$('#modal-edit-writing').modal('toggle');
 		});
 	},
 	
 	toggleModalForChangeDocumentTitle : function() {
+		var self = this;
 		$(this._cacheElement.writingDocumentTitle).on('click', function() {
-			var documentTitle = $(this._cacheElement.writingDocumentTitle).text();
-			$(this._cacheElement.titleOfToggleModal).val(documentTitle);
+			var documentTitle = $(self._cacheElement.writingDocumentTitle).text();
+			$(self._cacheElement.titleOfToggleModal).val(documentTitle);
 			$('#modal-edit-writing').modal('toggle');
 		});
 	}, 
 	
 	changeDocumentTitle : function() {
+		var self = this;
 		$('#btn-done').on('click', function() {
-			var title = $(this._cacheElement.titleOfToggleModal).val();
-			$(this._cacheElement.writingDocumentTitle).html(title);
+			var title = $(self._cacheElement.titleOfToggleModal).val();
+			$(self._cacheElement.writingDocumentTitle).html(title);
 		});
 	}, 
 	

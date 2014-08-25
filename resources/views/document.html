@@ -39,7 +39,10 @@
 							<a href="/SomaEditor/resources/views/document.html">Document</a>
 						</li>
 						<li>
-							<a href="/SomaEditor/resources/views/editor.html">Bookmark</a>
+							<a href="/SomaEditor/resources/views/bookmark.html">Bookmark</a>
+						</li>
+						<li>
+							<a href="/SomaEditor/resources/views/editor.html">Editor</a>
 						</li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
@@ -59,18 +62,18 @@
 				<div class="col-xs-6 col-sm-3 sidebar" id="sidebar" role="navigation" >
 					<h4>&nbsp; Category</h4>
 
-					<div class="list-group">
+					<div class="list-group document-sidebar-category">
 						<a href="#" class="list-group-item active">IT</a>
 						<a href="#" class="list-group-item">Culture</a>
 						<a href="#" class="list-group-item">Game</a>
 						<a href="#" class="list-group-item">ETC</a>
 					</div>
 					
-					<a href="#" class="list-group-item">Settings</a>
+					<a href="#" class="btn btn-default" id="add-category">Add Category</a>
 				</div><!--/span-->
 
-				<div class="col-xs-12 col-sm-9">
-					<table class="table table-bordered table-striped document-container-table">
+				<div class="col-xs-12 col-sm-9 document-container-tableWrapper">
+					<table class="table table-bordered table-striped">
 						<thead>
 							<tr>
 								<td>#</td>
@@ -112,21 +115,60 @@
 						</tbody>
 					</table>
 					
-					<div class="pagination-wrapper">
-						<ul class="pagination">
-						  <li><a href="#">&laquo;</a></li>
-						  <li><a href="#">1</a></li>
-						  <li><a href="#">2</a></li>
-						  <li><a href="#">3</a></li>
-						  <li><a href="#">4</a></li>
-						  <li><a href="#">5</a></li>
-						  <li><a href="#">&raquo;</a></li>
-						</ul>
+					<div class='row pagination-wrapper'>
+						<div class='col-sm-10'>
+							<ul class="pagination">
+							  <li><a href="#">&laquo;</a></li>
+							  <li><a href="#">1</a></li>
+							  <li><a href="#">2</a></li>
+							  <li><a href="#">3</a></li>
+							  <li><a href="#">4</a></li>
+							  <li><a href="#">5</a></li>
+							  <li><a href="#">&raquo;</a></li>
+							</ul>
+						</div>
+						
+						<div class='col-sm-2'>
+							<a href="/SomaEditor/resources/views/editor.html" class="btn btn-default btn-lg document-write-btn">Write</a>
+						</div>
 					</div>
+					
 				</div><!--/span-->
 				
 			</div><!--/row-->
 		</div>
+		
+		<div class='modal fade' id='modal-edit-category'>
+			<div class='modal-dialog'>
+				<div class='modal-content'>
+					<div class='modal-header'>
+						<button aria-hidden='true' class='close' data-dismiss='modal' type='button'>
+							&times;
+						</button>
+						<h4 class='modal-title'>Add Category</h4>
+					</div>
+					<div class='modal-body'>
+						<div class='form-horizontal'>
+							<div class='modal-message'></div>
+							<div class='form-group'>
+								<label class="control-label col-sm-2" for="title">Name</label>
+								<div class='col-sm-8'>
+									<input autofocus="autofocus" class="form-control" id="add-category-modal-title" name="title" type="text" value="" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class='modal-footer'>
+						<button class='btn btn-primary' data-dismiss='modal' id='add-categoty-btn-done' type='button'>
+							Done
+						</button>
+						<button class='btn btn-default' data-dismiss='modal' type='button'>
+							Cancel
+						</button>
+					</div>
+				</div>
+			</div>
+		</div> <!-- end of modal -->
 
 		<!-- Placed at the end of the document so the pages load faster -->
 		<script src="/SomaEditor/resources/lib/jquery/jquery-1.9.1.js"></script>
@@ -135,5 +177,6 @@
 		<!-- Global Script -->
 		<script src="/SomaEditor/resources/javascript/common.js"></script>
 		<script src="/SomaEditor/resources/javascript/editor.js"></script>
+		<script src="/SomaEditor/resources/javascript/document.js"></script>
 	</body>
 </html>

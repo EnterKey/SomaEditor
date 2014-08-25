@@ -17,3 +17,8 @@ body {
 .navbar-brand-title {
 	color : #FFFFFF ! important;
 }
+
+.document-sidebar-category > a.active {
+	background-color : #C0C0C0 ! important; 
+	border-color : #C0C0C0 ! important;
+}

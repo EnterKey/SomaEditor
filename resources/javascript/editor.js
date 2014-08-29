@@ -1,12 +1,11 @@
-/**
- * @author EnterKey
- */
+var EditorAppController = Class.extend({
+	init: function() {
+		var editorAppMainContentView = new EditorAppMainContentView();
+		var editorAppSideContentView = new EditorAppSideContentView();
+	}
+});
 
-if ( typeof (editor) == typeof (undefined)) {
-	editor = {};
-}
-
-editor = {
+var EditorAppMainContentView = Class.extend({
 	_cacheElement : {
 		writingDocumentTitle : '#writing_title',
 		titleOfToggleModal : '#modal-title',
@@ -17,25 +16,18 @@ editor = {
 	
 	init : function() {
 		this.setEventListener();
+		this.setEditor();
 	}, 
 	
+	setEditor : function() {
+		var editor = new Editor();
+	},
+	
 	setEventListener : function() {
-		this.toggleSideMenu();
 		this.toggleModalForChangeDocumentTitle();
 		this.changeDocumentTitle();
 		this.toggleReviewDivision();
 	}, 
-	
-	toggleSideMenu : function() {
-		var $body = $('body')[0], 
-			$menu_trigger = $('.menu-trigger');
-		
-		if (common.isUsableElement($menu_trigger)) {
-			$menu_trigger.on('click', function() {
-				$body.className = ( $body.className == 'menu-active' )? '' : 'menu-active';
-			});
-		}
-	},
 	
 	toggleModalForChangeDocumentTitle : function() {
 		var self = this;
@@ -69,4 +61,38 @@ editor = {
 			}
 		});
 	}
-};
+});
+
+var EditorAppSideContentView = Class.extend({
+	init : function() {
+		this.setEventListener();
+	}, 
+	
+	setEventListener : function() {
+		this.toggleSideMenu();
+	}, 
+	
+	toggleSideMenu : function() {
+		var $body = $('body')[0], 
+			$menu_trigger = $('.menu-trigger'), 
+			common = new Common();
+		
+		if (common.isUsableElement($menu_trigger)) {
+			$menu_trigger.on('click', function() {
+				$body.className = ( $body.className == 'menu-active' )? '' : 'menu-active';
+			});
+		}
+	}
+});
+
+var Editor = Class.extend({
+	init : function() {
+		CKEDITOR.replace('editor1', {
+			height : '500px'
+		}); 	
+	}
+});
+
+var BookmarkInfo = Class.extend({
+	init : function() { }
+});

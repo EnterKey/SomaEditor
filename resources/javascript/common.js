@@ -1,20 +1,11 @@
-/**
- * @author EnterKey
- */
-
-if ( typeof (common) == typeof (undefined)) {
-	common = {};
-}
-
-common = {
+var Common = Class.extend({
+	init : function() {},
 	isUsableElement : function(element) {
 		return typeof element != 'undefined' ? true : false;
 	}
-}; 
-
-$(document).ready(function() {
-	editor.init();
-    documents.init();
 });
 
-
+$(document).ready(function() {
+    var documentAppController = new DocumentAppController();
+    var editorAppController = new EditorAppController();
+});

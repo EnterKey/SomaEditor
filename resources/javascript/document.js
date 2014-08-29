@@ -1,8 +1,15 @@
-if ( typeof (documents) == typeof (undefined)) {
-	documents = {};
-}
+var DocumentAppController = Class.extend({
+	init: function() {
+		var documentAppMainContentView = new DocumentAppMainContentView();
+		var documentAppCategoryView = new DocumentAppCategoryView();
+	}
+});
 
-documents = {
+var DocumentAppMainContentView = Class.extend({
+	init : function() { }
+});
+
+var DocumentAppCategoryView = Class.extend({
 	_cacheElement : {
 		addCategoryBtn 				: '#add-category',
 		addCategoryDoneBtn 			: '#add-categoty-btn-done',
@@ -43,4 +50,42 @@ documents = {
 			$(self._cacheElement.sideMenu).append(appendItem);
 		});
 	}
-};
+});
+
+var Document = Class.extend({
+	init : function(id, title, date) {
+		this.id = id,
+		this.title = title,
+		this.date = date;
+	},
+	
+	setDocumentInfo : function(id, title, date) {
+		this.id = id,
+		this.title = title,
+		this.date = date;
+	}, 
+	
+	getDocumentInfo : function() {
+		var result = {
+			id : this.id,
+			title : this.title,
+			date : this.date 
+		};
+		
+		return result;
+	}
+});
+
+var category = Class.extend({
+	init : function(name) {
+		this.name = name;
+	},
+	
+	setCategoryName : function(name) {
+		this.name = name;
+	}, 
+	
+	getCategoryName : function() {
+		return this.name;
+	}
+});

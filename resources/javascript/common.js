@@ -1,5 +1,4 @@
 var Common = Class.extend({
-	init : function() {},
 	isUsableElement : function(element) {
 		return typeof element != 'undefined' ? true : false;
 	}

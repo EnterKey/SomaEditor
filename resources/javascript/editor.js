@@ -51,13 +51,14 @@ var EditorAppMainContentView = Class.extend({
         var self = this;
 		$('#toggle_preview_btn').on('click', function() {
 			var isReviewActive = $("input:checkbox[id='toggle_preview']").is(":checked");
-			
 			if(isReviewActive) {
 				$(self._cacheElement.editorDiv).removeClass('col-sm-6').addClass('col-sm-12');
 				$(self._cacheElement.prevviewDiv).removeClass('col-sm-6').addClass('col-sm-12');
+				$(self._cacheElement.prevviewDiv).hide();
 			} else {
 				$(self._cacheElement.editorDiv).removeClass('col-sm-12').addClass('col-sm-6');
 				$(self._cacheElement.prevviewDiv).removeClass('col-sm-12').addClass('col-sm-6');
+				$(self._cacheElement.prevviewDiv).show();
 			}
 		});
 	}

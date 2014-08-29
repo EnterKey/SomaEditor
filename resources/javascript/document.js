@@ -29,9 +29,9 @@ var DocumentAppCategoryView = Class.extend({
 	
 	setClickedCategoryAddActiveClass : function() {
 		var self = this;
-		$(self._cacheElement.sideMenu).on('click', 'a', function(e) {
-			$(self._cacheElement.sideMenu).children().removeClass('active');
-			$(this).addClass('active');
+		$(self._cacheElement.sideMenu).on('click', 'li', function(e) {
+			$(self._cacheElement.sideMenu).children().removeClass('document-active');
+			$(this).addClass('document-active');
 		});
 	}, 
 	
@@ -45,7 +45,7 @@ var DocumentAppCategoryView = Class.extend({
 		
 		$(this._cacheElement.addCategoryDoneBtn).on('click', function(e) {
             var categoryName = $(self._cacheElement.titleOfModalForAddCategory).val(),
-                appendItem = '<a href="#" class="list-group-item">' + categoryName + '</a>';
+                appendItem = '<li style="text-align: right;"><a href="#">' + categoryName + '</a></li>';
 
 			$(self._cacheElement.sideMenu).append(appendItem);
 		});

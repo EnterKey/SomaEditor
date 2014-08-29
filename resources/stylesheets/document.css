@@ -6,6 +6,10 @@
 	margin-top : 30px;
 }
 
+.document-sidebar-category > li > a {
+	color : #000000 !important;
+}
+
 .document-container-tableWrapper{
 	margin-top : 40px;
 }
@@ -18,3 +22,7 @@
 	margin-top : 15px;
 }
 
+.document-active {
+	border-left: 3px solid #000000;
+	background: #f9f9f9;
+}

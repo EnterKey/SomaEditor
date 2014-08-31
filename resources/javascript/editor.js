@@ -1,3 +1,9 @@
+/** @class editor.html Page의 Controller
+* @auther EnterKey
+* @version 1
+* @constructor 뷰 import후 생성
+* @description View를 import하고 init 하기 위한 클래스 
+*/
 var EditorAppController = Class.extend({
 	init: function() {
 		var editorAppMainContentView = new EditorAppMainContentView();
@@ -5,6 +11,11 @@ var EditorAppController = Class.extend({
 	}
 });
 
+/** @class editor.html Page의 Editor와 Preview 관련 뷰 클래스 
+* @auther EnterKey
+* @version 1
+* @description Page의 Editor와 Preview Division을 제어하기 위한 클래스 
+*/
 var EditorAppMainContentView = Class.extend({
 	_cacheElement : {
 		writingDocumentTitle : '#writing_title',
@@ -87,6 +98,11 @@ var EditorAppMainContentView = Class.extend({
 	}
 });
 
+/** @class editor.html Page의 좌측 side menu 관련 뷰 클래스 
+* @auther EnterKey
+* @version 1
+* @description Page의 side menu를 제어하기 위한 클래스 
+*/
 var EditorAppSideContentView = Class.extend({
 	init : function() {
 		this.setEventListener();
@@ -109,6 +125,11 @@ var EditorAppSideContentView = Class.extend({
 	}
 });
 
+/** @class editor.html editor 클래스
+* @auther EnterKey
+* @version 1
+* @description 글 쓰기 Editor 클래스
+*/
 var Editor = Class.extend({
 	init : function() {
 		CKEDITOR.replace('editor1', {
@@ -117,6 +138,11 @@ var Editor = Class.extend({
 	}
 });
 
+/** @class editor.html Preview Division에 보여지는 Bookmark의 info 클래스 
+* @auther EnterKey
+* @version 1
+* @description Preview Division에 보여지는 Bookmark의 info 클래스  
+*/
 var BookmarkInfo = Class.extend({
 	init : function() { }
 });

@@ -257,19 +257,5 @@
 		<!-- jstree -->
 		<script src="/SomaEditor/resources/lib/jstree/dist/jstree.min.js"></script>
 		<script src="/SomaEditor/resources/javascript/jstree.js"></script>
-		
-		<script>
-			$("button#add-preview-btn").click(function() {
-		        var num_tabs = $("div.previewTabs ul li").length + 1;
-		
-		        $("div.previewTabs ul").append(
-		            "<li><a href='#tab" + num_tabs + "'>#" + num_tabs + "</a></li>"
-		        );
-				$("div.previewTabs").append(
-		            "<div id='tab" + num_tabs + "'>#" + num_tabs + "</div>"
-		        );
-		        $("div.previewTabs").tabs("refresh");
-	    	});   
-		</script>
 	</body>
 </html>

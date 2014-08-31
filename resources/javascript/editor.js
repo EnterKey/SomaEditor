@@ -11,7 +11,9 @@ var EditorAppMainContentView = Class.extend({
 		titleOfToggleModal : '#modal-title',
         editorDiv : '#editor',
         prevviewDiv : '#preview',
-        modalForChangeDocumentTitle : '#modal-edit-writing'
+        modalForChangeDocumentTitle : '#modal-edit-writing',
+        previewNewTab : 'div.previewTabs ul li', 
+        addPreviewBtn : 'button#add-preview-btn'
 	},
 	
 	init : function() {
@@ -28,6 +30,7 @@ var EditorAppMainContentView = Class.extend({
 		this.toggleModalForChangeDocumentTitle();
 		this.changeDocumentTitle();
 		this.toggleReviewDivision();
+		this.addNewPreviewTab();
 	}, 
 	
 	toggleModalForChangeDocumentTitle : function() {
@@ -66,6 +69,21 @@ var EditorAppMainContentView = Class.extend({
 	
 	initReviewTab : function() {
 		$( "#tabs" ).tabs();
+	}, 
+	
+	addNewPreviewTab : function() {
+		var self = this;
+		$(self._cacheElement.addPreviewBtn).click(function() {
+		    var tabsCnt = $(self._cacheElement.previewNewTab).length + 1;
+		
+		    $("div.previewTabs ul").append(
+		        "<li><a href='#tab" + tabsCnt + "'>#" + tabsCnt + "</a></li>"
+		    );
+			$("div.previewTabs").append(
+		        "<div id='tab" + tabsCnt + "'>#" + tabsCnt + "</div>"
+		    );
+		    $("div.previewTabs").tabs("refresh");
+		});   
 	}
 });
 

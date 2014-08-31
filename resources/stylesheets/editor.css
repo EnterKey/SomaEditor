@@ -155,8 +155,24 @@ body.menu-active div#content .menu-trigger {
 #jstree-wrapper {
 	width: 250px; 
 	height: 350px; 
+	/*margin-left: 20px;
+	border: 1px solid #6b7b8d; 
+	border-radius: 5px;*/
+	overflow-y: scroll;
+}
+
+#jstree {
+	overflow-y: scroll;
+}
+
+.slide-menu-bookmarkList {
+	width: 250px; 
+	height: 380px; 
 	margin-left: 20px; 
 	border: 1px solid #6b7b8d; 
-	overflow-y: scroll;
 	border-radius: 5px;
+}
+
+.addPreviewBtn-wrapper {
+	text-align: right;
 }

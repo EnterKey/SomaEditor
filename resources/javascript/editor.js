@@ -17,6 +17,7 @@ var EditorAppMainContentView = Class.extend({
 	init : function() {
 		this.setEventListener();
 		this.setEditor();
+		this.initReviewTab();
 	}, 
 	
 	setEditor : function() {
@@ -61,6 +62,10 @@ var EditorAppMainContentView = Class.extend({
 				$(self._cacheElement.prevviewDiv).show();
 			}
 		});
+	}, 
+	
+	initReviewTab : function() {
+		$( "#tabs" ).tabs();
 	}
 });
 

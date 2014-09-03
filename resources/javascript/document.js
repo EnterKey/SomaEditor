@@ -199,21 +199,22 @@ var DocumentAppCategoryView = Class.extend({
 		for(var i = 0 ; i < categoryListLength ; i++ ) {
 			category = categoryList[i];
 			categoryItem += '<li style="text-align: right;">' + 
-								'<a class="left category-li-menu-hide" href="#" id="category-item-config"><span class="glyphicon glyphicon-cog" id="category-item-config"></span></a>' +
+								'<a class="left category-li-menu-hide" href="#" id="category-item-config">' +
+									'<span class="glyphicon glyphicon-cog" id="category-item-config"></span>' +
+								'</a>' +
 								'<a href="#"> ' + category + '</a>' +
 							'</li>';			
 		}
 		
 		$(this._cacheElement.sideMenu).append(categoryItem);
 		$(this._cacheElement.sideMenu).find('li').eq(0).addClass('document-active');
-		$(this._cacheElement.sideMenu).find('li').eq(0).find('a').eq(0).removeClass('category-li-menu-hide').addClass('category-li-menu-show');
+		$('.document-active').find('a').eq(0).removeClass('category-li-menu-hide').addClass('category-li-menu-show');
 	}, 
 	
 	toggleModalForChangeCategoryItemInfo : function() {
 		var self = this;
-		$(self._cacheElement.sideMenu).on('click', 'a' ,function() {
-			// var documentTitle = $(self._cacheElement.writingDocumentTitle).text();
-			// $(self._cacheElement.titleOfToggleModal).val(documentTitle);
+		$(self._cacheElement.sideMenu).on('click', '#category-item-config', function(e) {
+			e.preventDefault();
 			$(self._cacheElement.modalForModifyCategoryItem).modal('toggle');
 		});
 	}

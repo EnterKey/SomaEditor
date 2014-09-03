@@ -175,7 +175,12 @@ var DocumentAppCategoryView = Class.extend({
 		
 		$(this._cacheElement.addCategoryDoneBtn).on('click', function(e) {
             var categoryName = $(self._cacheElement.titleOfModalForAddCategory).val(),
-                appendItem = '<li style="text-align: right;"><a href="#">' + categoryName + '</a></li>';
+                appendItem = '<li style="text-align: right;">' + 
+								'<a class="left category-li-menu-hide" href="#" id="category-item-config">' +
+									'<span class="glyphicon glyphicon-cog" id="category-item-config"></span>' +
+								'</a>' +
+								'<a href="#"> ' + categoryName + '</a>' +
+							'</li>';
 
 			$(self._cacheElement.sideMenu).append(appendItem);
 		});

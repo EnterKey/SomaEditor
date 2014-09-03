@@ -222,3 +222,13 @@ a, a:hover, a:visited, .btn-link:hover { text-decoration: none; }
 @media (max-width: 600px) {
 	.list-thum .info-div .info > .name { width: 30% }
 }
+
+.category-li-menu-hide {
+	display: none ! important;
+	z-index:1000;
+}
+
+.category-li-menu-show {
+	display: block ! important;
+	z-index:1000;
+}

@@ -45,36 +45,43 @@ var DocumentAppMainContentView = Class.extend({
 		// });
 		this.requestData.documentList =	[
 			{
+				id: 1,
 				title : 'NodeJs',
 				date : '2014/8/28',
 				img : '/SomaEditor/resources/img/document/document.png'
 			},
 			{
+				id: 2,
 				title : 'MongoDB',
 				date : '2014/8/28',
 				img : '/SomaEditor/resources/img/document/document.png'
 			},
 			{
+				id: 3,
 				title : 'MySQL',
 				date : '2014/8/28',
 				img : '/SomaEditor/resources/img/document/document.png'
 			},
 			{
+				id: 4,
 				title : 'Javascript',
 				date : '2014/8/28',
 				img : '/SomaEditor/resources/img/document/document.png'
 			},
 			{
+				id: 5,
 				title : 'Test',
 				date : '2014/8/28',
 				img : '/SomaEditor/resources/img/document/document.png'
 			},
 			{
+				id: 6,
 				title : 'Example',
 				date : '2014/8/28',
 				img : '/SomaEditor/resources/img/document/document.png'
 			},
 			{
+				id: 7,
 				title : 'Blabla',
 				date : '2014/8/28',
 				img : '/SomaEditor/resources/img/document/document.png'
@@ -88,8 +95,6 @@ var DocumentAppMainContentView = Class.extend({
 		var documentList = this.requestData.documentList,
 			documentListLength = documentList.length,
 			documentItem = "";
-			
-			console.dir(documentList);
 			
 		for(var i = 0 ; i < documentListLength ; i++ ) {
 			var documentTitle = documentList[i].title, 
@@ -129,7 +134,9 @@ var DocumentAppCategoryView = Class.extend({
 		addCategoryDoneBtn 			: '#add-categoty-btn-done',
         modalForAddCategory 		: '#modal-edit-category',
         titleOfModalForAddCategory 	: '#add-category-modal-title',
-        sideMenu 					: '.document-sidebar-category'
+        sideMenu 					: '.document-sidebar-category',
+        categoryItemConfigBtn 		: '#category-item-config',
+    	modalForModifyCategoryItem 	: '#modalForModifyCategoryItem' 
 	},
 	
 	requestData : {
@@ -145,13 +152,16 @@ var DocumentAppCategoryView = Class.extend({
 	setEventListener : function() {
 		this.setClickedCategoryAddActiveClass();
 		this.addCategory();
+		this.toggleModalForChangeCategoryItemInfo();
 	},
 	
 	setClickedCategoryAddActiveClass : function() {
 		var self = this;
 		$(self._cacheElement.sideMenu).on('click', 'li', function(e) {
 			$(self._cacheElement.sideMenu).children().removeClass('document-active');
+			$('.category-li-menu-show').addClass('category-li-menu-hide').removeClass('category-li-menu-show');
 			$(this).addClass('document-active');
+			$(this).find('a').eq(0).removeClass('category-li-menu-hide').addClass('category-li-menu-show');
 		});
 	}, 
 	
@@ -188,11 +198,24 @@ var DocumentAppCategoryView = Class.extend({
 			
 		for(var i = 0 ; i < categoryListLength ; i++ ) {
 			category = categoryList[i];
-			categoryItem += '<li style="text-align: right;"><a href="#"> ' + category + '</a></li>';			
+			categoryItem += '<li style="text-align: right;">' + 
+								'<a class="left category-li-menu-hide" href="#" id="category-item-config"><span class="glyphicon glyphicon-cog" id="category-item-config"></span></a>' +
+								'<a href="#"> ' + category + '</a>' +
+							'</li>';			
 		}
 		
 		$(this._cacheElement.sideMenu).append(categoryItem);
 		$(this._cacheElement.sideMenu).find('li').eq(0).addClass('document-active');
+		$(this._cacheElement.sideMenu).find('li').eq(0).find('a').eq(0).removeClass('category-li-menu-hide').addClass('category-li-menu-show');
+	}, 
+	
+	toggleModalForChangeCategoryItemInfo : function() {
+		var self = this;
+		$(self._cacheElement.sideMenu).on('click', 'a' ,function() {
+			// var documentTitle = $(self._cacheElement.writingDocumentTitle).text();
+			// $(self._cacheElement.titleOfToggleModal).val(documentTitle);
+			$(self._cacheElement.modalForModifyCategoryItem).modal('toggle');
+		});
 	}
 	
 });

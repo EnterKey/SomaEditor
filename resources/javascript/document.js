@@ -205,7 +205,7 @@ var DocumentAppCategoryView = Class.extend({
 			category = categoryList[i];
 			categoryItem += '<li style="text-align: right;">' + 
 								'<a class="left category-li-menu-hide" href="#" id="category-item-config">' +
-									'<span class="glyphicon glyphicon-cog" id="category-item-config"></span>' +
+									'<span class="glyphicon glyphicon-cog"></span>' +
 								'</a>' +
 								'<a href="#"> ' + category + '</a>' +
 							'</li>';			
@@ -220,6 +220,7 @@ var DocumentAppCategoryView = Class.extend({
 		var self = this;
 		$(self._cacheElement.sideMenu).on('click', '#category-item-config', function(e) {
 			e.preventDefault();
+			console.dir(this);
 			$(self._cacheElement.modalForModifyCategoryItem).modal('toggle');
 		});
 	}

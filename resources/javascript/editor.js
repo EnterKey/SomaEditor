@@ -25,7 +25,8 @@ var EditorAppMainContentView = Class.extend({
         modalForChangeDocumentTitle : '#modal-edit-writing',
         previewNewTab 				: 'div.previewTabs ul li', 
         addPreviewBtn 				: 'button#add-preview-btn', 
-        previewTabHeight 			: '550px'
+        previewTabHeight 			: '600px',
+        selectedBookmarkTablName    : null
 	},
 	
 	init : function() {
@@ -43,6 +44,7 @@ var EditorAppMainContentView = Class.extend({
 		this.changeDocumentTitle();
 		this.toggleReviewDivision();
 		this.addNewPreviewTab();
+        this.translate();
 	}, 
 	
 	toggleModalForChangeDocumentTitle : function() {
@@ -97,7 +99,38 @@ var EditorAppMainContentView = Class.extend({
 		    );
 		    $("div.previewTabs").tabs("refresh");
 		});   
-	}
+	},
+
+    selectedNewTab : function() {
+        
+    },
+
+    translate : function() {
+        $('#translate-btn').on('click', function(e){
+            e.preventDefault();
+            var $activeTabName = $('.ui-state-active').find('a');
+            var translateForContet = $($activeTabName[0].hash).text().trim();
+
+            $('.ui-tabs-panel').css('height', '225');
+            $('.translateResultWrapper').css('display', 'block');
+
+            message = {
+                text: translateForContet,
+                originalLang: $("#originalLang").val(),
+                targetlang: $("#targetLang").val()
+            };
+
+            //직접 번역하는 경우
+//            getJSON(setQueryString(message), translateDirectLang);
+
+//            중간번역을 거치는 경우
+//            message.targetlang = $("#interLang").val();
+//            interBuffer.length = 0;
+//            $(".translateResult").text("");
+//            getJSON(setQueryString(message), translateInterLang);
+//            return false;
+        });
+    }
 });
 
 /** @class editor.html Page의 좌측 side menu 관련 뷰 클래스 
@@ -147,4 +180,83 @@ var Editor = Class.extend({
 */
 var BookmarkInfo = Class.extend({
 	init : function() { }
+});
+
+
+var isCORSSupport = 'withCredentials' in new XMLHttpRequest();
+var isIE = typeof XDomainRequest !== "undefined";
+var xdr;
+var interBuffer = [];
+var finalBuffer = [];
+var bufCnt = 0;
+
+var getJSON = function(query, callback) {
+    if (isCORSSupport) {
+        $.getJSON(query, callback);
+    } else if (isIE) {
+        xdr = new XDomainRequest();
+        if (xdr) {
+            xdr.onload = callback;
+            xdr.open("get", query);
+            xdr.send();
+        }
+    } else {
+        $.ajax({
+            type: "GET",
+            dataType: "jsonp",
+            jsonp: "callback",
+            url: query,
+            success: callback
+        });
+    }
+};
+
+var setQueryString = function(message) {
+    var result = "http://goxcors.appspot.com/cors?method=GET" +
+        "&url=" + encodeURIComponent("http://translate.google.com/translate_a/t?client=x" +
+        "&sl=" + message.originalLang + "&tl=" + message.targetlang+
+        "&text=" + encodeURIComponent(message.text));
+    return result;
+};
+
+var extractResult = function(data) {
+    if (!isCORSSupport && isIE) {
+        data = $.parseJSON(data.responseText);
+    }
+    return data && data.sentences && $.map(data.sentences, (function(v) { return v.trans }));
+};
+
+var translateLineByLine=function(i, buffer) {
+    message.text = buffer + "|!";
+    message.originalLang = $("#interLang").val();
+    message.targetlang = $("#targetLang").val();
+    var translateFinalLang=function(data) {
+        var post=extractResult(data).join('');
+        // prevent to trim new line
+        bufCnt--;
+        finalBuffer[i]=post.replace(/\|!/g, "");
+        $(".translateResult").text(finalBuffer.join(""));
+    };
+    getJSON(setQueryString(message), translateFinalLang);
+};
+
+
+var translateInterLang=function(data) {
+    interBuffer=extractResult(data);
+    $(".translateInterResult").text(interBuffer.join(""));
+
+    bufCnt = finalBuffer.length = interBuffer.length;
+
+    for (var i in interBuffer) {
+        translateLineByLine(i, interBuffer[i]);
+    }
+};
+
+var translateDirectLang=function(data) {
+    var post=extractResult(data).join('');
+    $(".translateDirectResult").text(post);
+};
+
+$().ready(function() {
+    $("#targetLang").val(navigator.userLanguage || navigator.language || "ko");
 });

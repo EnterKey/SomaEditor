@@ -28,7 +28,7 @@ var EditorAppMainContentView = Class.extend({
         previewTabHeight 			: '600px',
         selectedBookmarkTablName    : null
 	},
-	
+
 	init : function() {
 		this.setEventListener();
 		this.setEditor();
@@ -101,34 +101,34 @@ var EditorAppMainContentView = Class.extend({
 		});   
 	},
 
-    selectedNewTab : function() {
-        
-    },
-
     translate : function() {
         $('#translate-btn').on('click', function(e){
             e.preventDefault();
             var $activeTabName = $('.ui-state-active').find('a');
-            var translateForContet = $($activeTabName[0].hash).text().trim();
+            var translateForContent = $($activeTabName[0].hash).text().trim();
 
             $('.ui-tabs-panel').css('height', '225');
             $('.translateResultWrapper').css('display', 'block');
 
             message = {
-                text: translateForContet,
+                text: translateForContent,
                 originalLang: $("#originalLang").val(),
                 targetlang: $("#targetLang").val()
             };
 
-            //직접 번역하는 경우
-//            getJSON(setQueryString(message), translateDirectLang);
+            if($("#originalLang").val() == "") {
+            // 영어인 경우 : en --> ja --> ko
+                message.targetlang = 'ja';
+                interBuffer.length = 0;
+                $(".translateResult").text("");
+                getJSON(setQueryString(message), translateInterLang);
 
-//            중간번역을 거치는 경우
-//            message.targetlang = $("#interLang").val();
-//            interBuffer.length = 0;
-//            $(".translateResult").text("");
-//            getJSON(setQueryString(message), translateInterLang);
-//            return false;
+            } else {
+            // 영어가 아닌 경우 : etc --> target
+            // 혹은 중간 번역 없이 직접 번역할 경우
+                interBuffer.length = 0;
+                getJSON(setQueryString(message), translateDirectLang);
+            }
         });
     }
 });
@@ -226,9 +226,9 @@ var extractResult = function(data) {
     return data && data.sentences && $.map(data.sentences, (function(v) { return v.trans }));
 };
 
-var translateLineByLine=function(i, buffer) {
+var translateLineByLine = function(i, buffer) {
     message.text = buffer + "|!";
-    message.originalLang = $("#interLang").val();
+    message.originalLang = 'ja';
     message.targetlang = $("#targetLang").val();
     var translateFinalLang=function(data) {
         var post=extractResult(data).join('');
@@ -241,9 +241,9 @@ var translateLineByLine=function(i, buffer) {
 };
 
 
-var translateInterLang=function(data) {
-    interBuffer=extractResult(data);
-    $(".translateInterResult").text(interBuffer.join(""));
+var translateInterLang = function(data) {
+    interBuffer = extractResult(data);
+    $(".translateResult").text(interBuffer.join(""));
 
     bufCnt = finalBuffer.length = interBuffer.length;
 
@@ -252,9 +252,10 @@ var translateInterLang=function(data) {
     }
 };
 
-var translateDirectLang=function(data) {
-    var post=extractResult(data).join('');
-    $(".translateDirectResult").text(post);
+var translateDirectLang = function(data) {
+    var post = extractResult(data).join('');
+    $('.translateResult').text("");
+    $(".translateResult").text(post);
 };
 
 $().ready(function() {

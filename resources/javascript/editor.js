@@ -17,6 +17,8 @@ var EditorAppController = Class.extend({
 * @description Page의 Editor와 Preview Division을 제어하기 위한 클래스 
 */
 var EditorAppMainContentView = Class.extend({
+    _self : this,
+
 	_cacheElement : {
 		writingDocumentTitle 		: '#writing_title',
 		titleOfToggleModal 			: '#modal-title',
@@ -44,7 +46,7 @@ var EditorAppMainContentView = Class.extend({
 		this.changeDocumentTitle();
 		this.toggleReviewDivision();
 		this.addNewPreviewTab();
-        this.translate();
+        this.translate.action();
 	}, 
 	
 	toggleModalForChangeDocumentTitle : function() {
@@ -101,35 +103,125 @@ var EditorAppMainContentView = Class.extend({
 		});   
 	},
 
-    translate : function() {
-        $('#translate-btn').on('click', function(e){
-            e.preventDefault();
-            var $activeTabName = $('.ui-state-active').find('a');
-            var translateForContent = $($activeTabName[0].hash).text().trim();
+    translate : {
+        data : {
+            isCORSSupport : 'withCredentials' in new XMLHttpRequest(),
+            isIE : typeof XDomainRequest !== "undefined",
+            xdr : null,
+            interBuffer : [],
+            finalBuffer : [],
+            bufCnt : 0,
+            message : {
+                text : null,
+                originalLang : null,
+                targetlang : null
+            }
+        },
 
-            $('.ui-tabs-panel').css('height', '225');
-            $('.translateResultWrapper').css('display', 'block');
+        action : function() {
+            var self = this;
+            $('#translate-btn').on('click', function(e){
+                e.preventDefault();
+                var $activeTabName = $('.ui-state-active').find('a');
+                var translateForContent = $($activeTabName[0].hash).text().trim();
 
-            message = {
-                text: translateForContent,
-                originalLang: $("#originalLang").val(),
-                targetlang: $("#targetLang").val()
+                $('.ui-tabs-panel').css('height', '225');
+                $('.translateResultWrapper').css('display', 'block');
+
+                self.data.message = {
+                    text: translateForContent,
+                    originalLang: $("#originalLang").val(),
+                    targetlang: $("#targetLang").val()
+                };
+
+                if($("#originalLang").val() == "") {
+                    // 영어인 경우 : en --> ja --> ko
+                    self.data.message.targetlang = 'ja';
+                    self.data.interBuffer.length = 0;
+                    $(".translateResult").text("");
+
+                    self.getJSON(self.setQueryString(self.data.message), self.translateInterLang);
+
+                } else {
+                    // 영어가 아닌 경우 : etc --> target
+                    // 혹은 중간 번역 없이 직접 번역할 경우
+                    self.data.interBuffer.length = 0;
+                    self.getJSON(self.setQueryString(self.data.message), self.translateDirectLang);
+                }
+            });
+        },
+
+        getJSON : function(query, callback) {
+            if (this.data.isCORSSupport) {
+                $.getJSON(query, callback);
+            } else if (this.data.isIE) {
+                this.data.xdr = new XDomainRequest();
+                if (this.data.xdr) {
+                    this.data.xdr.onload = callback;
+                    this.data.xdr.open("get", query);
+                    this.data.xdr.send();
+                }
+            } else {
+                $.ajax({
+                    type: "GET",
+                    dataType: "jsonp",
+                    jsonp: "callback",
+                    url: query,
+                    success: callback
+                });
+            }
+        },
+
+        setQueryString : function(message) {
+            var result = "http://goxcors.appspot.com/cors?method=GET" +
+                "&url=" + encodeURIComponent("http://translate.google.com/translate_a/t?client=x" +
+                "&sl=" + message.originalLang + "&tl=" + message.targetlang+
+                "&text=" + encodeURIComponent(message.text));
+            return result;
+        },
+
+        extractResult : function(data) {
+            if (!this.data.isCORSSupport && this.data.isIE) {
+                data = $.parseJSON(data.responseText);
+            }
+            return data && data.sentences && $.map(data.sentences, (function(v) { return v.trans }));
+        },
+
+        translateLineByLine : function(i, buffer) {
+            this.data.message.text = buffer + "|!";
+            this.data.message.originalLang = 'ja';
+            this.data.message.targetlang = $("#targetLang").val();
+
+            var translateFinalLang = function(data) {
+                var post = this.extractResult(data).join('');
+                // prevent to trim new line
+                this.data.bufCnt--;
+                this.data.finalBuffer[i] = post.replace(/\|!/g, "");
+                $(".translateResult").text(this.data.finalBuffer.finalBuffer.join(""));
             };
 
-            if($("#originalLang").val() == "") {
-            // 영어인 경우 : en --> ja --> ko
-                message.targetlang = 'ja';
-                interBuffer.length = 0;
-                $(".translateResult").text("");
-                getJSON(setQueryString(message), translateInterLang);
+            this.getJSON(this.setQueryString(message), translateFinalLang);
+        },
 
-            } else {
-            // 영어가 아닌 경우 : etc --> target
-            // 혹은 중간 번역 없이 직접 번역할 경우
-                interBuffer.length = 0;
-                getJSON(setQueryString(message), translateDirectLang);
+        translateInterLang : function(data) {
+            var self = window.EditorAppMainContentView.translate;
+            self.data.interBuffer = self.extractResult(data);
+
+            $(".translateResult").text(self.data.interBuffer.join(""));
+
+            self.data.bufCnt = self.data.finalBuffer.length = self.data.interBuffer.length;
+
+            for (var i in self.data.interBuffer) {
+                self.translateLineByLine(i, interBuffer[i]);
             }
-        });
+        },
+
+        translateDirectLang : function(data) {
+            var self = EditorAppMainContentView.translate;
+            var post = self.extractResult(data).join('');
+            $('.translateResult').text("");
+            $(".translateResult").text(post);
+        }
     }
 });
 
@@ -182,81 +274,6 @@ var BookmarkInfo = Class.extend({
 	init : function() { }
 });
 
-
-var isCORSSupport = 'withCredentials' in new XMLHttpRequest();
-var isIE = typeof XDomainRequest !== "undefined";
-var xdr;
-var interBuffer = [];
-var finalBuffer = [];
-var bufCnt = 0;
-
-var getJSON = function(query, callback) {
-    if (isCORSSupport) {
-        $.getJSON(query, callback);
-    } else if (isIE) {
-        xdr = new XDomainRequest();
-        if (xdr) {
-            xdr.onload = callback;
-            xdr.open("get", query);
-            xdr.send();
-        }
-    } else {
-        $.ajax({
-            type: "GET",
-            dataType: "jsonp",
-            jsonp: "callback",
-            url: query,
-            success: callback
-        });
-    }
-};
-
-var setQueryString = function(message) {
-    var result = "http://goxcors.appspot.com/cors?method=GET" +
-        "&url=" + encodeURIComponent("http://translate.google.com/translate_a/t?client=x" +
-        "&sl=" + message.originalLang + "&tl=" + message.targetlang+
-        "&text=" + encodeURIComponent(message.text));
-    return result;
-};
-
-var extractResult = function(data) {
-    if (!isCORSSupport && isIE) {
-        data = $.parseJSON(data.responseText);
-    }
-    return data && data.sentences && $.map(data.sentences, (function(v) { return v.trans }));
-};
-
-var translateLineByLine = function(i, buffer) {
-    message.text = buffer + "|!";
-    message.originalLang = 'ja';
-    message.targetlang = $("#targetLang").val();
-    var translateFinalLang=function(data) {
-        var post=extractResult(data).join('');
-        // prevent to trim new line
-        bufCnt--;
-        finalBuffer[i]=post.replace(/\|!/g, "");
-        $(".translateResult").text(finalBuffer.join(""));
-    };
-    getJSON(setQueryString(message), translateFinalLang);
-};
-
-
-var translateInterLang = function(data) {
-    interBuffer = extractResult(data);
-    $(".translateResult").text(interBuffer.join(""));
-
-    bufCnt = finalBuffer.length = interBuffer.length;
-
-    for (var i in interBuffer) {
-        translateLineByLine(i, interBuffer[i]);
-    }
-};
-
-var translateDirectLang = function(data) {
-    var post = extractResult(data).join('');
-    $('.translateResult').text("");
-    $(".translateResult").text(post);
-};
 
 $().ready(function() {
     $("#targetLang").val(navigator.userLanguage || navigator.language || "ko");

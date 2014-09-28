@@ -45,6 +45,7 @@ var EditorAppMainContentView = Class.extend({
 		this.toggleReviewDivision();
 		this.addNewPreviewTab();
         this.translate();
+        this.toggleTranslateWindow();
 	}, 
 	
 	toggleModalForChangeDocumentTitle : function() {
@@ -101,9 +102,20 @@ var EditorAppMainContentView = Class.extend({
 		});   
 	},
 
+    toggleTranslateWindow : function() {
+        $('.previewTabs').on('click', 'li', function() {
+            $(".translateResult").text("");
+            $('.ui-tabs-panel').css('height', '520');
+            $('.translateResultWrapper').css('display', 'none');
+        });
+    },
+
     translate : function() {
         $('#translate-btn').on('click', function(e){
             e.preventDefault();
+
+            $(".translateResult").text("");
+            
             var $activeTabName = $('.ui-state-active').find('a');
             var translateForContent = $($activeTabName[0].hash).text().trim();
 

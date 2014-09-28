@@ -204,3 +204,7 @@ body.menu-active div#content .menu-trigger {
     border-width: 0;
     background: none;
 }
+
+.shortly-for-translate {
+    heigth : 225px !important;
+}

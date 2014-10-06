@@ -118,6 +118,11 @@ var EditorAppMainContentView = Class.extend({
             }
         },
 
+        _cachedElement : {
+            translateViewHeight : '225',
+            bookmarkPreviewHeight : '520'
+        },
+
         init : function() {
             this.setEventListener();
         },
@@ -134,9 +139,10 @@ var EditorAppMainContentView = Class.extend({
         },
 
         toggleTranslateWindow : function() {
+            var self = this;
             $('.previewTabs').on('click', 'li', function() {
                 $(".translateResult").text("");
-                $('.ui-tabs-panel').css('height', '520');
+                $('.ui-tabs-panel').css('height', self._cachedElement.bookmarkPreviewHeight);
                 $('.translateResultWrapper').css('display', 'none');
             });
         },
@@ -151,7 +157,7 @@ var EditorAppMainContentView = Class.extend({
 
                 self.dataInit();
 
-                $('.ui-tabs-panel').css('height', '225');
+                $('.ui-tabs-panel').css('height', self._cachedElement.translateViewHeight);
                 $('.translateResultWrapper').css('display', 'block');
 
                 self.data.message = {

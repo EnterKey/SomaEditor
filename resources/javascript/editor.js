@@ -118,12 +118,21 @@ var EditorAppMainContentView = Class.extend({
             }
         },
 
+        dataInit : function() {
+            for(var obj in this.data) {
+                obj = null;
+            }
+        },
+
         action : function() {
             var self = this;
+
             $('#translate-btn').on('click', function(e){
                 e.preventDefault();
                 var $activeTabName = $('.ui-state-active').find('a');
                 var translateForContent = $($activeTabName[0].hash).text().trim();
+
+                self.dataInit();
 
                 $('.ui-tabs-panel').css('height', '225');
                 $('.translateResultWrapper').css('display', 'block');
@@ -134,20 +143,7 @@ var EditorAppMainContentView = Class.extend({
                     targetlang: $("#targetLang").val()
                 };
 
-                if($("#originalLang").val() == "") {
-                    // 영어인 경우 : en --> ja --> ko
-                    self.data.message.targetlang = 'ja';
-                    self.data.interBuffer.length = 0;
-                    $(".translateResult").text("");
-
-                    self.getJSON(self.setQueryString(self.data.message), self.translateInterLang);
-
-                } else {
-                    // 영어가 아닌 경우 : etc --> target
-                    // 혹은 중간 번역 없이 직접 번역할 경우
-                    self.data.interBuffer.length = 0;
-                    self.getJSON(self.setQueryString(self.data.message), self.translateDirectLang);
-                }
+                self.getJSON(self.setQueryString(self.data.message), self.translateDirectLang);
             });
         },
 
@@ -187,38 +183,10 @@ var EditorAppMainContentView = Class.extend({
             return data && data.sentences && $.map(data.sentences, (function(v) { return v.trans }));
         },
 
-        translateLineByLine : function(i, buffer) {
-            this.data.message.text = buffer + "|!";
-            this.data.message.originalLang = 'ja';
-            this.data.message.targetlang = $("#targetLang").val();
-
-            var translateFinalLang = function(data) {
-                var post = this.extractResult(data).join('');
-                // prevent to trim new line
-                this.data.bufCnt--;
-                this.data.finalBuffer[i] = post.replace(/\|!/g, "");
-                $(".translateResult").text(this.data.finalBuffer.finalBuffer.join(""));
-            };
-
-            this.getJSON(this.setQueryString(message), translateFinalLang);
-        },
-
-        translateInterLang : function(data) {
-            var self = window.EditorAppMainContentView.translate;
-            self.data.interBuffer = self.extractResult(data);
-
-            $(".translateResult").text(self.data.interBuffer.join(""));
-
-            self.data.bufCnt = self.data.finalBuffer.length = self.data.interBuffer.length;
-
-            for (var i in self.data.interBuffer) {
-                self.translateLineByLine(i, interBuffer[i]);
-            }
-        },
-
         translateDirectLang : function(data) {
-            var self = EditorAppMainContentView.translate;
+            var self = EditorAppMainContentView.prototype.translate;
             var post = self.extractResult(data).join('');
+            
             $('.translateResult').text("");
             $(".translateResult").text(post);
         }

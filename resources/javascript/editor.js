@@ -27,20 +27,23 @@ var EditorAppMainContentView = Class.extend({
         modalForChangeDocumentTitle : '#modal-edit-writing',
         previewNewTab 				: 'div.previewTabs ul li', 
         addPreviewBtn 				: 'button#add-preview-btn', 
-        previewTabHeight 			: '600px',
-        selectedBookmarkTablName    : null
+        previewTabHeight 			: '600px'
 	},
 
 	init : function() {
 		this.setEventListener();
 		this.setEditor();
 		this.initReviewTab();
-        this.translate.init();
+        this.setTranslator();
 	},
 	
 	setEditor : function() {
 		var editor = new Editor();
 	},
+
+    setTranslator : function() {
+        var translate = new Translate();
+    },
 	
 	setEventListener : function() {
 		this.toggleModalForChangeDocumentTitle();
@@ -101,119 +104,7 @@ var EditorAppMainContentView = Class.extend({
 		    );
 		    $("div.previewTabs").tabs("refresh");
 		});   
-	},
-
-    translate : {
-        data : {
-            isCORSSupport : 'withCredentials' in new XMLHttpRequest(),
-            isIE : typeof XDomainRequest !== "undefined",
-            xdr : null,
-            interBuffer : [],
-            finalBuffer : [],
-            bufCnt : 0,
-            message : {
-                text : null,
-                originalLang : null,
-                targetlang : null
-            }
-        },
-
-        _cachedElement : {
-            translateViewHeight : '225',
-            bookmarkPreviewHeight : '520'
-        },
-
-        init : function() {
-            this.setEventListener();
-        },
-
-        setEventListener : function() {
-            this.toggleTranslateWindow();
-            this.action();
-        },
-
-        dataInit : function() {
-            for(var obj in this.data) {
-                obj = null;
-            }
-        },
-
-        toggleTranslateWindow : function() {
-            var self = this;
-            $('.previewTabs').on('click', 'li', function() {
-                $(".translateResult").text("");
-                $('.ui-tabs-panel').css('height', self._cachedElement.bookmarkPreviewHeight);
-                $('.translateResultWrapper').css('display', 'none');
-            });
-        },
-
-        action : function() {
-            var self = this;
-
-            $('#translate-btn').on('click', function(e){
-                e.preventDefault();
-                var $activeTabName = $('.ui-state-active').find('a');
-                var translateForContent = $($activeTabName[0].hash).text().trim();
-
-                self.dataInit();
-
-                $('.ui-tabs-panel').css('height', self._cachedElement.translateViewHeight);
-                $('.translateResultWrapper').css('display', 'block');
-
-                self.data.message = {
-                    text: translateForContent,
-                    originalLang: $("#originalLang").val(),
-                    targetlang: $("#targetLang").val()
-                };
-
-                self.getJSON(self.setQueryString(self.data.message), self.translateDirectLang);
-            });
-        },
-
-        getJSON : function(query, callback) {
-            if (this.data.isCORSSupport) {
-                $.getJSON(query, callback);
-            } else if (this.data.isIE) {
-                this.data.xdr = new XDomainRequest();
-                if (this.data.xdr) {
-                    this.data.xdr.onload = callback;
-                    this.data.xdr.open("get", query);
-                    this.data.xdr.send();
-                }
-            } else {
-                $.ajax({
-                    type: "GET",
-                    dataType: "jsonp",
-                    jsonp: "callback",
-                    url: query,
-                    success: callback
-                });
-            }
-        },
-
-        setQueryString : function(message) {
-            var result = "http://goxcors.appspot.com/cors?method=GET" +
-                "&url=" + encodeURIComponent("http://translate.google.com/translate_a/t?client=x" +
-                "&sl=" + message.originalLang + "&tl=" + message.targetlang+
-                "&text=" + encodeURIComponent(message.text));
-            return result;
-        },
-
-        extractResult : function(data) {
-            if (!this.data.isCORSSupport && this.data.isIE) {
-                data = $.parseJSON(data.responseText);
-            }
-            return data && data.sentences && $.map(data.sentences, (function(v) { return v.trans }));
-        },
-
-        translateDirectLang : function(data) {
-            var self = EditorAppMainContentView.prototype.translate;
-            var post = self.extractResult(data).join('');
-            
-            $('.translateResult').text("");
-            $(".translateResult").text(post);
-        }
-    }
+	}
 });
 
 /** @class editor.html Page의 좌측 side menu 관련 뷰 클래스 
@@ -256,14 +147,123 @@ var Editor = Class.extend({
 	}
 });
 
-/** @class editor.html Preview Division에 보여지는 Bookmark의 info 클래스 
-* @auther EnterKey
-* @version 1
-* @description Preview Division에 보여지는 Bookmark의 info 클래스  
-*/
-var BookmarkInfo = Class.extend({
-	init : function() { }
+/** @class editor.html Preview Division에 보여지는 번역기 클래스
+ * @auther EnterKey
+ * @version 1
+ * @description Preview Division에 보여지는 번역기 클래스
+ */
+var Translate = Class.extend({
+    data : {
+        isCORSSupport : 'withCredentials' in new XMLHttpRequest(),
+        isIE : typeof XDomainRequest !== "undefined",
+        xdr : null,
+        interBuffer : [],
+        finalBuffer : [],
+        bufCnt : 0,
+        message : {
+            text : null,
+            originalLang : null,
+            targetlang : null
+        }
+    },
+
+    _cachedElement : {
+        translateViewHeight : '225',
+        bookmarkPreviewHeight : '520'
+    },
+
+    init : function() {
+        this.setEventListener();
+    },
+
+    setEventListener : function() {
+        this.toggleTranslateWindow();
+        this.action();
+    },
+
+    dataInit : function() {
+        for(var obj in this.data) {
+            obj = null;
+        }
+    },
+
+    toggleTranslateWindow : function() {
+        var self = this;
+        $('.previewTabs').on('click', 'li', function() {
+            $(".translateResult").text("");
+            $('.ui-tabs-panel').css('height', self._cachedElement.bookmarkPreviewHeight);
+            $('.translateResultWrapper').css('display', 'none');
+        });
+    },
+
+    action : function() {
+        var self = this;
+
+        $('#translate-btn').on('click', function(e){
+            e.preventDefault();
+            var $activeTabName = $('.ui-state-active').find('a');
+            var translateForContent = $($activeTabName[0].hash).text().trim();
+
+            self.dataInit();
+
+            $('.ui-tabs-panel').css('height', self._cachedElement.translateViewHeight);
+            $('.translateResultWrapper').css('display', 'block');
+
+            self.data.message = {
+                text: translateForContent,
+                originalLang: $("#originalLang").val(),
+                targetlang: $("#targetLang").val()
+            };
+
+            self.getJSON(self.setQueryString(self.data.message), self.translateDirectLang);
+        });
+    },
+
+    getJSON : function(query, callback) {
+        if (this.data.isCORSSupport) {
+            $.getJSON(query, callback);
+        } else if (this.data.isIE) {
+            this.data.xdr = new XDomainRequest();
+            if (this.data.xdr) {
+                this.data.xdr.onload = callback;
+                this.data.xdr.open("get", query);
+                this.data.xdr.send();
+            }
+        } else {
+            $.ajax({
+                type: "GET",
+                dataType: "jsonp",
+                jsonp: "callback",
+                url: query,
+                success: callback
+            });
+        }
+    },
+
+    setQueryString : function(message) {
+        var result = "http://goxcors.appspot.com/cors?method=GET" +
+            "&url=" + encodeURIComponent("http://translate.google.com/translate_a/t?client=x" +
+            "&sl=" + message.originalLang + "&tl=" + message.targetlang+
+            "&text=" + encodeURIComponent(message.text));
+        return result;
+    },
+
+    extractResult : function(data) {
+        if (!this.data.isCORSSupport && this.data.isIE) {
+            data = $.parseJSON(data.responseText);
+        }
+        return data && data.sentences && $.map(data.sentences, (function(v) { return v.trans }));
+    },
+
+    translateDirectLang : function(data) {
+        var self = Translate.prototype;
+        var post = self.extractResult(data).join('');
+
+        $('.translateResult').text("");
+        $(".translateResult").text(post);
+    }
 });
+
 
 
 $().ready(function() {
